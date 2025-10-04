@@ -64,16 +64,14 @@ const ResultsList = ({ results, isLoading }: ResultsListProps) => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="grid md:grid-cols-3 gap-6">
       {Object.entries(groupedResults).map(([type, places]) => {
-        if (places.length === 0) return null;
-        
         const Icon = icons[type as keyof typeof icons];
         const title = type.charAt(0).toUpperCase() + type.slice(1) + 's';
 
         return (
-          <div key={type}>
-            <div className="flex items-center gap-2 mb-3">
+          <Card key={type} className="p-4">
+            <div className="flex items-center gap-2 mb-4">
               <Icon className="h-5 w-5 text-primary" />
               <h3 className="font-semibold text-lg">{title}</h3>
               <Badge variant="secondary" className="ml-auto">
@@ -81,31 +79,35 @@ const ResultsList = ({ results, isLoading }: ResultsListProps) => {
               </Badge>
             </div>
             <div className="space-y-2">
-              {places.map((place, index) => (
-                <Card 
-                  key={`${place.name}-${index}`}
-                  className="p-4 hover:shadow-md transition-shadow cursor-pointer"
-                >
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="flex-1 min-w-0">
-                      <h4 className="font-medium text-foreground mb-1 truncate">
+              {places.length === 0 ? (
+                <p className="text-sm text-muted-foreground text-center py-8">
+                  No {title.toLowerCase()} found
+                </p>
+              ) : (
+                places.map((place, index) => (
+                  <Card 
+                    key={`${place.name}-${index}`}
+                    className="p-3 hover:shadow-md transition-shadow cursor-pointer"
+                  >
+                    <div className="space-y-2">
+                      <h4 className="font-medium text-foreground text-sm truncate">
                         {place.name}
                       </h4>
-                      <p className="text-sm text-muted-foreground truncate">
+                      <p className="text-xs text-muted-foreground truncate">
                         {place.address}
                       </p>
+                      <Badge 
+                        variant="outline"
+                        className={`${colors[type as keyof typeof colors]} text-xs`}
+                      >
+                        {formatDistance(place.distance)}
+                      </Badge>
                     </div>
-                    <Badge 
-                      variant="outline"
-                      className={colors[type as keyof typeof colors]}
-                    >
-                      {formatDistance(place.distance)}
-                    </Badge>
-                  </div>
-                </Card>
-              ))}
+                  </Card>
+                ))
+              )}
             </div>
-          </div>
+          </Card>
         );
       })}
     </div>

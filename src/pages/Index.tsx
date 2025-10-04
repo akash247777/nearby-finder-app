@@ -143,25 +143,21 @@ const Index = () => {
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-6">
-        <div className="grid lg:grid-cols-3 gap-6">
-          {/* Results Panel */}
-          <div className="lg:col-span-1 space-y-4">
-            <Card className="p-4">
-              <h2 className="font-semibold text-lg mb-4">Nearby Places</h2>
-              <ResultsList results={results} isLoading={isSearching} />
-            </Card>
+        <div className="space-y-6">
+          {/* Results Panel - Side by Side */}
+          <div>
+            <h2 className="font-semibold text-lg mb-4">Nearby Places</h2>
+            <ResultsList results={results} isLoading={isSearching} />
           </div>
 
           {/* Map */}
-          <div className="lg:col-span-2">
-            <Card className="p-4 h-[600px]">
-              <Map
-                center={homeLocation}
-                markers={markers}
-                onLoad={setMapInstance}
-              />
-            </Card>
-          </div>
+          <Card className="p-4 h-[600px]">
+            <Map
+              center={homeLocation}
+              markers={markers}
+              onLoad={setMapInstance}
+            />
+          </Card>
         </div>
       </main>
     </div>
